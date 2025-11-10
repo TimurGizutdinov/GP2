@@ -2,7 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-
+from selenium.common.exceptions import TimeoutException
 
 driver = webdriver.Firefox()
 print('браузер запущен')
@@ -22,5 +22,14 @@ try:
 
     submit_btn.click()
     print('тап по кнопке входа')
+    try:
+        pop_up = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.CSS_SELECTOR, '.modal.show')))
+        print('если обнаружили всплывающее окно то закрываем')
+        close_btn = pop_up.find_element(By.CSS_SELECTOR, 'button.close')
+        close_btn.click()
+        WebDriverWait(driver, 5).until(EC.invisibility_of_element(pop_up))
+        print('закрыли')
+    except TimeoutException:
+        print('не появилось, идем далее')
 finally:
     driver.quit()
