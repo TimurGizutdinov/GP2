@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
+import time
 
 driver = webdriver.Firefox()
 print('браузер запущен')
@@ -31,5 +32,14 @@ try:
         print('закрыли')
     except TimeoutException:
         print('не появилось, идем далее')
+
+    driver.get('https://app.mayak.bz/wb/sellers/2071435?fbs=true&from_date=2025-10-10&period=месяц+%2830+суток%29&sort_field=sales&sort_order=desc&tab=goods&to_date=2025-11-08')
+    print('переход на страницу продавца')
+    print('ждем загрузку страницы')
+    time.sleep(10)
+    
+    thead = driver.find_element(By.CSS_SELECTOR, 'div.fixed-table-header table thead')
+    print('заголовки найдены')
+    
 finally:
     driver.quit()
